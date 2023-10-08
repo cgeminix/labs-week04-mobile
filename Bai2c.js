@@ -10,11 +10,50 @@ import React, { useState } from 'react';
 
 //Bài 2c
 const Bai2c = () => {
-  const [check1, setCheck1] = useState(false);
-  const [check2, setCheck2] = useState(false);
-  const [check3, setCheck3] = useState(false);
-  const [check4, setCheck4] = useState(false);
-  const [length, setLenght] = useState();
+  const [lowerCase, setLowerCase] = useState(true)
+  const [upperCase, setUpperCase] = useState(false)
+  const [numbers, setNumbers] = useState(false)
+  const [symbols, setSymbols] = useState(false)
+  const [lenghts, setLenghts] = useState(6);
+  const [values, setValues] = useState("");
+
+  const lowerCaseChars = "abcdefghijklmnopqrstuvwxyz";
+  const upperCaseChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  const numberChars = "0123456789";
+  const specialChars = "!@#$%^&*()_+";
+
+  const getRandom = () =>{
+    const chars = [];
+    if(upperCase){
+      chars.push(upperCaseChars[Math.floor(Math.random() * upperCaseChars.length)])
+    }
+    
+    if(lowerCase){
+      chars.push(lowerCaseChars[Math.floor(Math.random() * lowerCaseChars.length)])
+    }
+    
+    if(numbers){
+      chars.push(numberChars[Math.floor(Math.random() * numberChars.length)])
+    }
+    
+    if(symbols){
+      chars.push(specialChars[Math.floor(Math.random() * specialChars.length)])
+    }
+
+    if(chars===0)
+      return;
+
+    return chars[Math.floor(Math.random() * chars.length)];
+  }
+
+  const generatorPassword = () =>{
+    let pass = "";
+    for (let i = 0; i < lenghts; i++){
+      pass += getRandom();
+    }
+    setValues(pass);
+  }
+
   const styles = StyleSheet.create({
     container: {
       flex: 1,
@@ -45,6 +84,8 @@ const Bai2c = () => {
       color: '#FFF',
     },
     txtPassword: {
+      textAlign: 'center',
+      justifyContent: 'center',
       height: 40,
       width: 250,
       fontWeight: 500,
@@ -94,36 +135,36 @@ const Bai2c = () => {
     <View style={styles.container}>
       <View style={styles.backgroundIn}>
         <Text style={styles.title}>PASSWORD {'\n'}GENERATOR</Text>
-        <TextInput style={styles.txtPassword} editable={false} maxLenght={4}></TextInput>
+        <Text style={styles.txtPassword}>{values}</Text>
         <View style={styles.pan}>
           <Text style={styles.text}>Password lenght</Text>
-          <TextInput style={styles.txtLenghtPass}></TextInput>
+          <TextInput style={styles.txtLenghtPass} onChangeText={setLenghts}></TextInput>
         </View>
 
         <View style={styles.pan}>
           <Text style={styles.text}>Include lower case letters</Text>
-          <CheckBox size={40} checked={check1} onPress={() => setCheck1(!check1)} 
+          <CheckBox size={40} checked={lowerCase} onPress={() => setLowerCase(!lowerCase)} 
             containerStyle={{backgroundColor:'#23235B', marginTop:-10}}/>
         </View>
 
         <View style={styles.pan}>
           <Text style={styles.text}>Include upcase letters</Text>
-          <CheckBox size={40} checked={check2} onPress={() => setCheck2(!check2)} 
+          <CheckBox size={40} checked={upperCase} onPress={() => setUpperCase(!upperCase)} 
             containerStyle={{backgroundColor:'#23235B', marginTop:-10, marginLeft:38}}/>
         </View>
 
         <View style={styles.pan}>
           <Text style={styles.text}>Include number</Text>
-          <CheckBox size={40} checked={check3} onPress={() => setCheck3(!check3)} 
+          <CheckBox size={40} checked={numbers} onPress={() => setNumbers(!numbers)} 
             containerStyle={{backgroundColor:'#23235B', marginTop:-10, marginLeft:84}}/>
         </View>
 
         <View style={styles.pan}>
           <Text style={styles.text}>Include special symbol</Text>
-          <CheckBox size={40} checked={check4} onPress={() => setCheck4(!check4)} 
+          <CheckBox size={40} checked={symbols} onPress={() => setSymbols(!symbols)} 
             containerStyle={{backgroundColor:'#23235B', marginTop:-10, marginLeft:34}}/>
         </View>
-        <TouchableOpacity style = {styles.button}>
+        <TouchableOpacity style = {styles.button} onPress={generatorPassword}>
           <Text style = {styles.txtButton}>GENERATOR PASSWORD</Text>
         </TouchableOpacity>
       </View>
